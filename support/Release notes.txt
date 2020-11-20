@@ -1,4 +1,28 @@
 ===============================================================================
+18.20.2
+Fixed etl::to_string for floating point numbers between 0 & -1.0
+
+===============================================================================
+18.20.1
+Resolved issue with zero length literals for etl::make_string (again!)
+Remove redundant test support code.
+Disabled ASAN option in Visual Studio project.
+
+===============================================================================
+18.20.0
+Added etl::buffer_descriptors.
+Added std/etl pair conversions.
+Added etl::make_string_view.
+Resolved issue with zero length literals for etl::make_string
+Resolved etl::flags constexpr issues.
+Added atomics for clang.
+Resolved type_traits issues for GCC < v5
+
+===============================================================================
+18.19.3
+Addressed ARMCC v5 C++11 issues
+
+===============================================================================
 18.19.2
 Expanded the use of constexpr in etl::flags
 

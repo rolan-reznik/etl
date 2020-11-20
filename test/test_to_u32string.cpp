@@ -41,16 +41,6 @@ namespace
 {
   typedef etl::u32format_spec Format;
 
-  std::ostream& operator << (std::ostream& os, const etl::iu32string& str)
-  {
-    for (auto c : str)
-    {
-      os << c;
-    }
-
-    return os;
-  }
-
   SUITE(test_to_u32string)
   {
     //*************************************************************************
@@ -273,6 +263,9 @@ namespace
 
       CHECK(etl::u32string<20>(STR(" -12.345678")) == etl::to_string(-12.345678, str, Format().precision(6).width(11).right()));
       CHECK(etl::u32string<20>(STR("-12.345678 ")) == etl::to_string(-12.345678, str, Format().precision(6).width(11).left()));
+
+      CHECK(etl::u32string<20>(STR(" -0.123456")) == etl::to_string(-0.123456, str, Format().precision(6).width(10).right()));
+      CHECK(etl::u32string<20>(STR("-0.123456 ")) == etl::to_string(-0.123456, str, Format().precision(6).width(10).left()));
     }
 
     //*************************************************************************
@@ -291,6 +284,9 @@ namespace
 
       str.assign(STR("Result "));
       CHECK(etl::u32string<20>(STR("Result -12.345678 ")) == etl::to_string(-12.345678, str, Format().precision(6).width(11).left(), true));
+
+      str.assign(STR("Result "));
+      CHECK(etl::u32string<20>(STR("Result -0.123456 ")) == etl::to_string(-0.123456, str, Format().precision(6).width(10).left(), true));
     }
 
     //*************************************************************************

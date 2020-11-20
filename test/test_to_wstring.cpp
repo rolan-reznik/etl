@@ -43,16 +43,6 @@ namespace
 {
   typedef etl::wformat_spec Format;
 
-  std::ostream& operator << (std::ostream& os, const etl::iwstring& str)
-  {
-    for (auto c : str)
-    {
-      os << c;
-    }
-
-    return os;
-  }
-
   SUITE(test_to_wstring)
   {
     //*************************************************************************
@@ -274,6 +264,9 @@ namespace
 
       CHECK(etl::wstring<20>(STR(" -12.345678")) == etl::to_string(-12.345678, str, Format().precision(6).width(11).right()));
       CHECK(etl::wstring<20>(STR("-12.345678 ")) == etl::to_string(-12.345678, str, Format().precision(6).width(11).left()));
+
+      CHECK(etl::wstring<20>(STR(" -0.123456")) == etl::to_string(-0.123456, str, Format().precision(6).width(10).right()));
+      CHECK(etl::wstring<20>(STR("-0.123456 ")) == etl::to_string(-0.123456, str, Format().precision(6).width(10).left()));
     }
 
     //*************************************************************************
@@ -292,6 +285,9 @@ namespace
 
       str.assign(STR("Result "));
       CHECK(etl::wstring<20>(STR("Result -12.345678 ")) == etl::to_string(-12.345678, str, Format().precision(6).width(11).left(), true));
+
+      str.assign(STR("Result "));
+      CHECK(etl::wstring<20>(STR("Result -0.123456 ")) == etl::to_string(-0.123456, str, Format().precision(6).width(10).left(), true));
     }
 
     //*************************************************************************

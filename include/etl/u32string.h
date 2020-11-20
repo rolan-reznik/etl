@@ -246,7 +246,7 @@ namespace etl
 
   //***************************************************************************
   /// A u32string implementation that uses a fixed size buffer.
-  /// A specilisation that requires an external buffer to be specified.
+  /// A specialisation that requires an external buffer to be specified.
   ///\ingroup u32string
   //***************************************************************************
   template <>
@@ -434,6 +434,13 @@ namespace etl
 #endif
     {
     }
+
+  private:
+
+    //*************************************************************************
+    /// Deleted.
+    //*************************************************************************
+    u32string(const u32string& other) ETL_DELETE;
   };
 
   //*************************************************************************
@@ -462,16 +469,16 @@ namespace etl
 #endif
 
   //***************************************************************************
-  /// Make u32string from UTF-16 string literal or char32_t array
+  /// Make string from string literal or array
   //***************************************************************************
-  template<const size_t MAX_SIZE>
-  etl::u32string<MAX_SIZE - 1> make_string(const char32_t (&text) [MAX_SIZE])
+  template<size_t ARRAY_SIZE>
+  etl::u32string<ARRAY_SIZE == 1 ? 1 : ARRAY_SIZE - 1> make_string(const char32_t(&text)[ARRAY_SIZE])
   {
-    return etl::u32string<MAX_SIZE - 1>(text, MAX_SIZE - 1);
+    return etl::u32string<ARRAY_SIZE == 1 ? 1 : ARRAY_SIZE - 1>(text, ARRAY_SIZE - 1);
   }
 
   //***************************************************************************
-  /// Make string with max capacity from string literal or char array
+  /// Make string with max capacity from string literal or array
   //***************************************************************************
   template<const size_t MAX_SIZE, const size_t SIZE>
   etl::u32string<MAX_SIZE> make_string_with_capacity(const char32_t(&text)[SIZE])

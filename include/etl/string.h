@@ -36,8 +36,10 @@ SOFTWARE.
 #include "string_view.h"
 #include "hash.h"
 
+#include <ctype.h>
+
 #if ETL_CPP11_SUPPORTED && ETL_NOT_USING_STLPORT && ETL_USING_STL
-#include <initializer_list>
+  #include <initializer_list>
 #endif
 
 #include "private/minmax_push.h"
@@ -260,7 +262,7 @@ namespace etl
 
   //***************************************************************************
   /// A string implementation that uses a fixed size buffer.
-  /// A specilisation that requires an external buffer to be specified.
+  /// A specialisation that requires an external buffer to be specified.
   ///\ingroup string
   //***************************************************************************
   template <>
@@ -332,7 +334,7 @@ namespace etl
     /// Constructor, from null terminated text.
     ///\param text The initial text of the string.
     //*************************************************************************
-    string(const value_type* text, value_type* buffer, size_type buffer_size)
+    string(const char* text, char* buffer, size_type buffer_size)
       : istring(buffer, buffer_size - 1U)
     {
       // Is the initial text at the same address as the buffer?
@@ -449,6 +451,13 @@ namespace etl
 #endif
     {
     }
+
+  private:
+
+    //*************************************************************************
+    /// Deleted.
+    //*************************************************************************
+    string(const string& other) ETL_DELETE;
   };
 
   //*************************************************************************
@@ -477,16 +486,16 @@ namespace etl
 #endif
 
   //***************************************************************************
-  /// Make string from string literal or char array
+  /// Make string from string literal or array
   //***************************************************************************
-  template<const size_t MAX_SIZE>
-  etl::string<MAX_SIZE - 1> make_string(const char(&text)[MAX_SIZE])
+  template<size_t ARRAY_SIZE>
+  etl::string<ARRAY_SIZE == 1 ? 1 : ARRAY_SIZE - 1> make_string(const char(&text)[ARRAY_SIZE])
   {
-    return etl::string<MAX_SIZE - 1>(text, MAX_SIZE - 1);
+    return etl::string<ARRAY_SIZE == 1 ? 1 : ARRAY_SIZE - 1>(text, ARRAY_SIZE - 1);
   }
 
   //***************************************************************************
-  /// Make string with max capacity from string literal or char array
+  /// Make string with max capacity from string literal or array
   //***************************************************************************
   template<const size_t MAX_SIZE, const size_t SIZE>
   etl::string<MAX_SIZE> make_string_with_capacity(const char(&text)[SIZE])

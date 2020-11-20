@@ -246,7 +246,7 @@ namespace etl
 
   //***************************************************************************
   /// A wstring implementation that uses a fixed size buffer.
-  /// A specilisation that requires an external buffer to be specified.
+  /// A specialisation that requires an external buffer to be specified.
   ///\ingroup wstring
   //***************************************************************************
   template <>
@@ -434,6 +434,13 @@ namespace etl
 #endif
     {
     }
+
+  private:
+
+    //*************************************************************************
+    /// Deleted.
+    //*************************************************************************
+    wstring(const wstring& other) ETL_DELETE;
   };
 
   //*************************************************************************
@@ -462,12 +469,12 @@ namespace etl
 #endif
 
   //***************************************************************************
-  /// Make wstring from wide string literal or wchar_t array
+  /// Make string from string literal or array
   //***************************************************************************
-  template<const size_t MAX_SIZE>
-  etl::wstring<MAX_SIZE - 1> make_string(const wchar_t (&text) [MAX_SIZE])
+  template<size_t ARRAY_SIZE>
+  etl::wstring<ARRAY_SIZE == 1 ? 1 : ARRAY_SIZE - 1> make_string(const wchar_t(&text)[ARRAY_SIZE])
   {
-    return etl::wstring<MAX_SIZE - 1>(text, MAX_SIZE - 1);
+    return etl::wstring<ARRAY_SIZE == 1 ? 1 : ARRAY_SIZE - 1>(text, ARRAY_SIZE - 1);
   }
 
   //***************************************************************************
